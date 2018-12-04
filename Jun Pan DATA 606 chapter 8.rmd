@@ -1,0 +1,122 @@
+---
+title: "Data 606 chapter 8"
+author: "Jun Pan"
+date: "December 2, 2018"
+output: html_document
+---
+
+```
+8.2 Baby weights, Part II. Exercise 8.1 introduces a data set on birth weight of babies. Another variable we consider is parity, which is 0 if the child is the first born, and 1 otherwise. The summary table below shows the results of a linear regression model for predicting the average birth weight of babies, measured in ounces, from parity. Estimate Std. Error t value Pr(>|t|) (Intercept) 120.07 0.60 199.94 0.0000 parity -1.93 1.19 -1.62 0.1052 
+```
+
+(a) Write the equation of the regression line. 
+$weight = 120.07 - 1.93 * parity$
+
+
+(b) Interpret the slope in this context, and calculate the predicted birth weight of first borns and others. 
+
+First Borns weight = 120.07 - 1.93 x 0 = 120.07, 
+other Borns weight = 120.07 - 1.93 x 1 = 120.07 - 1.93 = 118.14  
+
+
+(c) Is there a statistically significant relationship between the average birth weight and parity?
+
+Accoding to the summary table, the "p-value" is about 0.1, which is greater than 0.05. We fail to reject the null hypothes. There is no significant relationship between the average birth weight and parity.
+
+
+```
+8.4 Absenteeism. Researchers interested in the relationship between absenteeism from school and certain demographic characteristics of children collected data from 146 randomly sampled students in rural New South Wales, Australia, in a particular school year. Below are three observations from this data set.
+
+The summary table below shows the results of a linear regression model for predicting the average number of days absent based on ethnic background (eth: 0 - aboriginal, 1 - not aboriginal), sex (sex: 0 - female, 1 - male), and learner status (lrn: 0 - average learner, 1 - slow learner).18
+```
+(a) Write the equation of the regression line. 
+
+$Absenteeism = 18.93 - 9.11 * (ethnic background) + 3.10 * (sex) + 2.15 * (learner status)$
+
+(b) Interpret each one of the slopes in this context. 
+
+"ethnic background": The model shows that the average number of days absent by the non-aboriginal students is 9.11 days decreased compared to the aboriginal students. 
+
+"sex": The model shows that the average number of days absent by male students is 3.1 days more than by female students. 
+
+"learning status": The model showss that the average number of days absent by slow learners is 2.15 days more than by average learners.
+
+(c) Calculate the residual for the first observation in the data set: a student who is aboriginal, male, a slow learner, and missed 2 days of school. 
+
+
+(d) The variance of the residuals is 240.57, and the variance of the number of absent days for all students in the data set is 264.17. Calculate the R2 and the adjusted R2. Note that there are 146 observations in the data set.
+
+```{r}
+Absent <- 18.93 - 9.11 * (0) + 3.10 * (1) + 2.15 * (1)
+Residual <- 2 - Absent
+paste("Residual: ", Residual)
+```
+
+
+```
+8.8 Absenteeism, Part II. Exercise 8.4 considers a model that predicts the number of days absent using three predictors: ethnic background (eth), gender (sex), and learner status (lrn). The table below shows the adjusted R-squared for the model as well as adjusted R-squared values for all models we evaluate in the first step of the backwards elimination process.
+```
+
+Which, if any, variable should be removed from the model first?
+
+
+We should remove the learner status.  After remove the learner status, the adjusted R-squared would improve from 0.0701 to 0.0723.
+
+
+
+```
+8.16 Challenger disaster, Part I. On January 28, 1986, a routine launch was anticipated for the Challenger space shuttle. Seventy-three seconds into the flight, disaster happened: the shuttle broke apart, killing all seven crew members on board. An investigation into the cause of the disaster focused on a critical seal called an O-ring, and it is believed that damage to these O-rings during a shuttle launch may be related to the ambient temperature during the launch. The table below summarizes observational data on O-rings for 23 shuttle missions, where the mission order is based on the temperature at the time of the launch. Temp gives the temperature in Fahrenheit, Damaged represents the number of damaged O-rings, and Undamaged represents the number of O-rings that were not damaged.
+```
+
+(a)	Each column of the table above represents a di???erent shuttle mission. Examine these data and describe what you observe with respect to the relationship between temperatures and damaged O-rings. 
+
+It seems that there is more occurrences of damaged of the O-rings at lower Temperatures.  
+
+
+(b) Failures have been coded as 1 for a damaged O-ring and 0 for an undamaged O-ring, and a logistic regression model was fit to these data. A summary of this model is given below. Describe the key components of this summary table in words.
+
+Based on the summary table, there is a negative relationship between temperature and O-ring failures. Increase in temperature decreases the probability of an O-ring failure. Additionally, the $p-value$ is close to $0$, so the relationship between temperature and O-ring failure has significance. 
+
+
+(c) Write out the logistic model using the point estimates of the model parameters. 
+
+logit(pi) = log((pi)/(1-pi)) = 11.6630 - 0.2162 * (temperature)
+
+
+(d) Based on the model, do you think concerns regarding O-rings are justified? Explain.
+
+Because the p_value for temperature is 0.0000 <0.05, which means statistically significant. So there is good justification for the concerns for temperature.
+
+
+
+```
+8.18 Challenger disaster, Part II. Exercise 8.16 introduced us to O-rings that were identified as a plausible explanation for the breakup of the Challenger space shuttle 73 seconds into takeo??? in 1986. The investigation found that the ambient temperature at the time of the shuttle launch was closely related to the damage of O-rings, which are a critical component of the shuttle. See this earlier exercise if you would like to browse the original data.
+```
+
+(a) The data provided in the previous exercise are shown in the plot. The logistic model fit to these data may be written as log ??? p^ 1 ! p^ ??? = 11.6630 ! 0.2162 ??? T emperature where ^p is the model-estimated probability that an O-ring will become damaged. Use the model to calculate the probability that an O-ring will become damaged at each of the following ambient temperatures: 51, 53, and 55 degrees Fahrenheit. The model-estimated probabilities for several additional ambient temperatures are provided below, where subscripts indicate the temperature: p^57 = 0.341 ^p59 = 0.251 ^p61 = 0.179 ^p63 = 0.124 p^65 = 0.084 ^p67 = 0.056 ^p69 = 0.037 ^p71 = 0.024 
+
+```{r}
+#probability of damaged O-rings at 51 degrees
+p_51 = exp(11.663-0.2162*51)/(1+exp(11.663-0.2162*51))
+paste("O Ring Failure Probability at Temp 51: ", round(p_51, 3))
+#probability of damaged O-rings at 53 degrees
+p_53 = exp(11.663-0.2162*53)/(1+exp(11.663-0.2162*53))
+paste("O Ring Failure Probability at Temp 53: ", round(p_53, 3))
+#probability of damaged O-rings at 55 degrees
+p_55 = exp(11.663-0.2162*55)/(1+exp(11.663-0.2162*55))
+paste("O Ring Failure Probability at Temp 55: ", round(p_55, 3))
+```
+
+
+(b) Add the model-estimated probabilities from part (a) on the plot, then connect these dots using a smooth curve to represent the model-estimated probabilities. 
+```{r}
+temp<-c(seq(51,71,2))
+p<-exp(11.663-0.2162*temp)/(1+exp(11.663-0.2162))
+plot(data.frame(temp,p),pch=18, type="o",col="blue")
+```
+
+
+
+(c) Describe any concerns you may have regarding applying logistic regression in this application, and note any assumptions that are required to accept the model's validity.
+
+The codition for logistic regression are hard to check in this case because of the limited amount of data.
